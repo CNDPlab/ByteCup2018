@@ -1,7 +1,7 @@
 import torch as t
 import os
 from Predictor import Models
-from Predictor.Utils.DataPipe import DataPipe
+from Predictor.Utils.DataPipe import SouGouDataPipe
 from nltk.parse.corenlp import CoreNLPParser
 
 

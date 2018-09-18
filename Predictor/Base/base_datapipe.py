@@ -23,13 +23,17 @@ class BaseDataPipe(object):
     def check_process(self):
         raise NotImplementedError
 
-    def line_to_middle(self, line_str):
-        line_token = self._clean_split_line(line_str)
+    def line_to_middle_train(self, line_str, is_train=True):
+        line_token = self.line_to_middle(line_str, is_train)
         return line_token
 
-    def line_to_processed(self, line_token):
-        line_id = self._convert_line(line_token)
-        return line_id
+    def line_to_middle_dev(self, line_str, is_train=False):
+        line_token = self.line_to_middle(line_str, is_train)
+        return line_token
+
+    def line_to_middle(self, line_str, is_train=False):
+        line_token = self._clean_split_line(line_str, is_train)
+        return line_token
 
     def train_w2v(self, embedding_dim, min_count, num_works):
         """
@@ -37,34 +41,35 @@ class BaseDataPipe(object):
         :param sentance_list:
         :return:
         """
-        sentance = Sentance(self.sentance_list)
+        sentance = Sentance(self.sentance_list, self.bos, self.eos)
         model = self._train_w2v(embedding_dim=embedding_dim, min_count=min_count, num_works=num_works, sentance=sentance)
-        return model
+        return model, sentance
 
-    def _clean_split_line(self, line_str):
-        """
+    def line_to_processed(self, line_token):
+        line_id = self._convert_line(line_token)
+        return line_id
+
+    def _clean_split_line(self, line_str, is_train):
         line_str = self._clean_line(line_str)
-        line_token = self.tokenizer.tokenize(line_str)
-        line_token = self._add_bos_eos(line_token)
+        line_token = self._tokenize(line_str)
+        line_token = self._clean_line_token_post(line_token)
+        if is_train:
+            self.sentance_list.append(line_token)
         return line_token
-
-        :param line_str:
-        :return:
-        """
-        raise NotImplementedError
-
-    def _collect_corpus(self, inputs):
-        """
-        self.sentance_list = []
-        :param inputs:
-        :return:
-        """
-        raise NotImplementedError
 
     def _clean_line(self, word_str):
         """
         word_str = word_str.lower()
         return word_str
+        """
+        raise NotImplementedError
+
+    def _clean_line_token_post(self, line_token):
+        """
+
+        :param line_token:
+        :return:
+        return line_token
         """
         raise NotImplementedError
 
@@ -75,9 +80,6 @@ class BaseDataPipe(object):
         :return:
         """
         raise NotImplementedError
-
-    def _add_bos_eos(self, word_list):
-        return [self.bos] + word_list + [self.eos]
 
     def _convert_line(self, line_token):
         line_id = [self.vocab.from_token_id(i) for i in line_token]
@@ -93,15 +95,15 @@ class BaseDataPipe(object):
 
 class Sentance():
     """
-    corpus: [['<BOS>', 'a', 'b', '<EOS>'],]
+    corpus: [['a', 'b', 'c'],]
     """
 
-    def __init__(self, corpus):
+    def __init__(self, corpus, bos, eos):
         self.corpus = corpus
 
     def __iter__(self):
         for i in tqdm(self.corpus, desc='itering corpus'):
-            return i
+            return ['<BOS>'] + i + ['<EOS>']
 
 
 

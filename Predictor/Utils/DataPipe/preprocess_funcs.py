@@ -1,3 +1,5 @@
+import re
+
 
 def is_ustr(in_str):
     """
@@ -55,8 +57,7 @@ def remove(text):
     :return:
     """
     text = text.replace('<Paragraph>', '。')
-    text = text.replace('！', '。')
-    text = text.replace('：', ':')
+
     #text = re.sub(r'\([^)]*\)', '', text)
     #text = re.sub(r'\{.*\}', '', text)
     #text = re.sub(r'\（.*\）', '', text)
