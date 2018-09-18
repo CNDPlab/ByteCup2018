@@ -156,10 +156,8 @@ def main(task):
         checker = Checker()
         checker.check()
 
-
 if __name__ == '__main__':
     fire.Fire()
-
 
 
 
