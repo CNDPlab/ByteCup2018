@@ -10,7 +10,7 @@ class DefaultConfigs():
     byte_middle = os.path.join(byte_root, 'middle')
     byte_processed = os.path.join(byte_root, 'processed')
 
-
+    load_from_exp = None
     batch_zie = 64
     hidden_size = 64
     embedding_dim = 256
