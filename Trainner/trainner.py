@@ -1,6 +1,7 @@
 from Predictor.Base import BaseTrainner
 import torch as t
 from tqdm import tqdm
+import numpy as np
 
 
 
@@ -27,7 +28,7 @@ class Trainner(BaseTrainner):
             else:
                 self.model.encoder.embedding.weight.grad.data[0] = 0
 
-            t.nn.utils.clip_grad_norm_(parameters=self.model.parameters, max_norm=5.0)
+            t.nn.utils.clip_grad_norm_(parameters=self.model.parameters(), max_norm=5.0)
             self.optim.step_and_update_lr()
 
             if self.summary_writer:

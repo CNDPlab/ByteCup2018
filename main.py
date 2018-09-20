@@ -20,7 +20,7 @@ def train(**kwargs):
     args.parse(kwargs)
     train_loader = get_dataloader(os.path.join(args.byte_processed, 'train'))
     dev_loader = get_dataloader(os.path.join(args.byte_processed, 'dev'))
-    vocab = pk.load(open(os.path.join(args.vocab_folder + 'vocab.pkl'), 'rb'))
+    vocab = pk.load(open(os.path.join(args.vocab_folder, args.vocab_name), 'rb'))
 
     args.eos_id, args.sos_id = vocab.token2id['<EOS>'], vocab.token2id['<BOS>']
 

@@ -6,24 +6,21 @@ import os
 class DefaultConfigs():
     data_root = 'Datas/'
 
-    byte_root = os.path.join(data_root, 'ByteCup')
+    byte_root = os.path.join(data_root, 'byte_cup')
     byte_raw = os.path.join(byte_root, 'raw')
-    byte_middle = os.path.join(byte_root, 'middle')
-    byte_processed = os.path.join(byte_root, 'processed')
 
     sog_root = os.path.join(data_root, 'sog')
     sog_raw = os.path.join(sog_root, 'raw')
-    sog_middle = os.path.join(sog_root, 'middle')
-    sog_processed = os.path.join(sog_root, 'processed')
-
 
 
     load_from_exp = None
+
     batch_zie = 64
     hidden_size = 64
     embedding_dim = 256
-
+    model_name = 'Transformer'
     vocab_folder = 'Predictor/Utils/Vocab/'
+    vocab_name = 'vocab_byte.pkl'
     ckpt_root = 'ckpt/'
     eos_id = None
     sos_id = None

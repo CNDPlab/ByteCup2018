@@ -1,5 +1,6 @@
 from tqdm import tqdm
 import gensim
+import ipdb
 
 
 class BaseDataPipe(object):
@@ -86,7 +87,7 @@ class BaseDataPipe(object):
         return line_id
 
     def _train_w2v(self, embedding_dim, min_count, num_works, sentance):
-        model = gensim.models.FastText(size=embedding_dim, min_count=min_count, num_works=num_works)
+        model = gensim.models.FastText(size=embedding_dim, min_count=min_count, workers=num_works)
         model.build_vocab(sentance)
         print(f'building vocab')
         model.train(sentance, total_examples=model.corpus_count, epochs=model.iter)
@@ -100,10 +101,12 @@ class Sentance():
 
     def __init__(self, corpus, bos, eos):
         self.corpus = corpus
+        self.bos = bos
+        self.eos = eos
 
     def __iter__(self):
         for i in tqdm(self.corpus, desc='itering corpus'):
-            return ['<BOS>'] + i + ['<EOS>']
+            yield [self.bos] + i + [self.eos]
 
 
 
