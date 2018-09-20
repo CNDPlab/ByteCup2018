@@ -1,6 +1,7 @@
 from tqdm import tqdm
 import gensim
 import ipdb
+import pickle as pk
 
 
 class BaseDataPipe(object):
@@ -92,6 +93,13 @@ class BaseDataPipe(object):
         print(f'building vocab')
         model.train(sentance, total_examples=model.corpus_count, epochs=model.iter)
         return model
+
+    def get_vocab(self, vocab):
+        self.vocab = vocab
+
+    def id2word_line(self, id_line):
+        word_line = [self.vocab.from_id_token(id) for id in id_line]
+        return word_line
 
 
 class Sentance():
